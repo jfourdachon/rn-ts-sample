@@ -38,7 +38,11 @@ const StartGameTitle = styled.Text`
     margin-bottom: 10px;
 `
 
-export const StartGameScreen = () => {
+type IProps = {
+    onStartGame: (selectedNumber: number | null) => void
+}
+
+export const StartGameScreen = (props: IProps) => {
     const [enteredValue, setEnteredValue] = useState('')
     const [confirmed, setConfirmed] = useState(false)
     const [selectedNumber, setSelectedNumber] = useState<number | null>(null)
@@ -71,6 +75,7 @@ export const StartGameScreen = () => {
         setConfirmed(true)
         setSelectedNumber(chosenNumber)
         setEnteredValue('')
+        Keyboard.dismiss()
     }
 
     let confirmedOutput
@@ -79,8 +84,16 @@ export const StartGameScreen = () => {
         confirmedOutput = (
             <View style={{ marginTop: 15 }}>
                 <Card style={styles.card}>
+                    <Text>You selected</Text>
+
                     <ChosenNumber selectedNumber={selectedNumber} />
-                    <Button title="START GAME" onPress={() => {}}/>
+                    <Button
+                        title="START GAME"
+                        onPress={() => {
+                            console.log('bordel')
+                            props.onStartGame(selectedNumber)
+                        }}
+                    />
                 </Card>
             </View>
         )

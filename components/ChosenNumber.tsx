@@ -9,7 +9,6 @@ type IProps = {
 const ChosenNumber = ({ selectedNumber }: IProps) => {
     return (
         <>
-            <Text>You selected</Text>
             <View style={styles.numberContainer}>
                 <Text style={styles.number}>{selectedNumber}</Text>
             </View>

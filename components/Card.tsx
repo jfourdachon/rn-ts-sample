@@ -4,7 +4,7 @@ import { StyleSheet, View, ViewStyle } from 'react-native'
 
 type CardProps = {
     children?: React.ReactNode;
-    style: {width: number, maxWidth: string, alignItems: string}
+    style?: {}
   }
   
 const Card = (props: CardProps) => {
