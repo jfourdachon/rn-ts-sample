@@ -39,13 +39,13 @@ const StartGameTitle = styled.Text`
 `
 
 type IProps = {
-    onStartGame: (selectedNumber: number | null) => void
+    onStartGame: (selectedNumber: number) => void
 }
 
 export const StartGameScreen = (props: IProps) => {
     const [enteredValue, setEnteredValue] = useState('')
     const [confirmed, setConfirmed] = useState(false)
-    const [selectedNumber, setSelectedNumber] = useState<number | null>(null)
+    const [selectedNumber, setSelectedNumber] = useState<number>(0)
 
     const nbInputHandler = (inputText: string) => {
         setEnteredValue(inputText.replace(/[^0-9]/g, ''))
@@ -90,7 +90,6 @@ export const StartGameScreen = (props: IProps) => {
                     <Button
                         title="START GAME"
                         onPress={() => {
-                            console.log('bordel')
                             props.onStartGame(selectedNumber)
                         }}
                     />
