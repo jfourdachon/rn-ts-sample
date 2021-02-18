@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/native'
 import colors from '../constants/colors'
+import style from '../constants/style/text'
 
 
 const HeaderView = styled.View`
@@ -14,7 +15,6 @@ const HeaderView = styled.View`
 
 const HeaderText = styled.Text`
     color: #0c0b0b;
-    font-size: 18px;
 `;
 
 export type HeaderProps = {
@@ -25,7 +25,7 @@ const Header = ({title}: HeaderProps) => {
 
     return (
         <HeaderView>
-            <HeaderText>{title}</HeaderText>
+            <HeaderText style={style.title}>{title}</HeaderText>
         </HeaderView>
     )
 }

@@ -9,6 +9,7 @@ import {
     Alert,
 } from 'react-native'
 import styled from 'styled-components/native'
+import style from '../constants/style/text'
 
 import Card from '../components/Card'
 import ChosenNumber from '../components/ChosenNumber'
@@ -33,7 +34,6 @@ const ButtonContainer = styled.View`
 `
 
 const StartGameTitle = styled.Text`
-    font-size: 20px;
     margin-top: 10px;
     margin-bottom: 10px;
 `
@@ -84,7 +84,7 @@ export const StartGameScreen = (props: IProps) => {
         confirmedOutput = (
             <View style={{ marginTop: 15 }}>
                 <Card style={styles.card}>
-                    <Text>You selected</Text>
+                    <Text style={style.body}>You selected</Text>
 
                     <ChosenNumber selectedNumber={selectedNumber} />
                     <Button
@@ -101,9 +101,9 @@ export const StartGameScreen = (props: IProps) => {
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <StartGameView>
-                <StartGameTitle>The Game Screen!</StartGameTitle>
+                <StartGameTitle style={style.title}>Start a new Game!</StartGameTitle>
                 <Card style={styles.card}>
-                    <StartGameText>Select a number</StartGameText>
+                    <StartGameText style={style.body}>Select a number</StartGameText>
                     <Input
                         style={styles.input}
                         autoCorrect={false}
