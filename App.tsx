@@ -4,15 +4,14 @@ import { ThemeProvider } from 'styled-components/native'
 import { lightTheme } from './styles/theme'
 
 import * as Font from 'expo-font'
-import { AppLoading } from 'expo'
-
+import AppLoading from 'expo-app-loading'
 import Header from './components/Header'
 import StartGameScreen from './screens/StartGameScreen'
 import GameScreen from './screens/GameScreen'
 import GameOverScreen from './screens/GameOverScreen'
 
-const fetchFonts = () => {
-    Font.loadAsync({
+const fetchFonts = async() => {
+    await Font.loadAsync({
         'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
         'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
     })
@@ -44,7 +43,12 @@ const App = () => {
             <View style={{ flex: 1 }}>
                 <Header title="Guess a Number" />
                 {userNumber === 0 ? (
-                    <StartGameScreen onStartGame={startGameHandler} />
+                    // <StartGameScreen onStartGame={startGameHandler} />
+                    <GameOverScreen
+                        roundsCount={guessRounds}
+                        userChoice={userNumber}
+                        startNewGame={startNewGameHandler}
+                    />
                 ) : guessRounds <= 0 ? (
                     <GameScreen userChoice={userNumber} onGameOver={gameOverHandler} />
                 ) : (
