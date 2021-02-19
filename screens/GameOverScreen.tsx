@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, Image, StyleSheet, Text, View } from 'react-native'
 import style from '../constants/style/text'
+import colors from '../constants/colors'
 
 type IProps = {
     roundsCount: number
@@ -16,8 +17,9 @@ const GameOverScreen = ({ roundsCount, userChoice, startNewGame }: IProps) => {
                 {/* <Image source={require('../assets/images/success.png')} style={styles.image} resizeMode="cover" /> */}
                 <Image source={{uri: 'https://www.oddizzi.com/wp-content/uploads/2011/01/img-woman-on-summit_big.jpg'}} style={styles.image} resizeMode="stretch" fadeDuration={1000} />
             </View>
-            <Text style={style.body}>Number of rounds: {roundsCount}</Text>
-            <Text style={style.body}>Number was: {userChoice}</Text>
+            <View style={styles.resultContainer}>
+            <Text style={[style.body, styles.resultText]}>Your phone needed <Text style={styles.highlight}>{roundsCount}</Text> to guess the number <Text style={styles.highlight}>{userChoice}</Text></Text>
+            </View>
             <Button title="NEW GAME" onPress={startNewGame} />
         </View>
     )
@@ -42,7 +44,19 @@ const styles = StyleSheet.create({
         // always set width + height on images with url
         width: '100%',
         height: '100%',
-    }
+    },
+    resultContainer: {
+        marginHorizontal: 20,
+        marginVertical: 15
+    },
+    resultText: {
+        textAlign: 'center',
+        fontSize: 18
+    },
+     highlight: {
+         color: colors.primary,
+          fontFamily: 'open-sans-bold'
+     },
 })
 
 export default GameOverScreen

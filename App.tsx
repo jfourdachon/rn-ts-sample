@@ -43,12 +43,7 @@ const App = () => {
             <View style={{ flex: 1 }}>
                 <Header title="Guess a Number" />
                 {userNumber === 0 ? (
-                    // <StartGameScreen onStartGame={startGameHandler} />
-                    <GameOverScreen
-                        roundsCount={guessRounds}
-                        userChoice={userNumber}
-                        startNewGame={startNewGameHandler}
-                    />
+                    <StartGameScreen onStartGame={startGameHandler} />
                 ) : guessRounds <= 0 ? (
                     <GameScreen userChoice={userNumber} onGameOver={gameOverHandler} />
                 ) : (
