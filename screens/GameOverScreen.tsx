@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Image, StyleSheet, Text, View } from 'react-native'
 import style from '../constants/style/text'
 import colors from '../constants/colors'
+import MainButton from '../components/MainButton'
 
 type IProps = {
     roundsCount: number
@@ -20,7 +21,7 @@ const GameOverScreen = ({ roundsCount, userChoice, startNewGame }: IProps) => {
             <View style={styles.resultContainer}>
             <Text style={[style.body, styles.resultText]}>Your phone needed <Text style={styles.highlight}>{roundsCount}</Text> to guess the number <Text style={styles.highlight}>{userChoice}</Text></Text>
             </View>
-            <Button title="NEW GAME" onPress={startNewGame} />
+            <MainButton onPress={startNewGame}>NEW GAME</MainButton>
         </View>
     )
 }

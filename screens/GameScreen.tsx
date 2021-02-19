@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Button, Alert } from 'react-native'
 import Card from '../components/Card'
 import ChosenNumber from '../components/ChosenNumber'
 import style from '../constants/style/text'
+import MainButton from '../components/MainButton'
 
 const generatedRandomNumber = (min: number, max: number, exclude: number | null): number => {
     min = Math.ceil(min)
@@ -16,7 +17,7 @@ const generatedRandomNumber = (min: number, max: number, exclude: number | null)
 }
 
 type IProps = {
-    userChoice: number,
+    userChoice: number
     onGameOver: (numOfRounds: number) => void
 }
 
@@ -36,10 +37,7 @@ const GameScreen = ({ userChoice, onGameOver }: IProps) => {
     const [rounds, setRounds] = useState(0)
 
     const nextGuessHandler = (direction: Direction) => {
-        if (
-            (direction === Direction.Lower && currentGuess < userChoice) ||
-            (direction === Direction.Greater && currentGuess > userChoice)
-        ) {
+        if ((direction === Direction.Lower && currentGuess < userChoice) || (direction === Direction.Greater && currentGuess > userChoice)) {
             Alert.alert("Don't lie", 'You know that is wrong', [{ text: 'Sorry', style: 'cancel' }])
             return
         }
@@ -53,11 +51,11 @@ const GameScreen = ({ userChoice, onGameOver }: IProps) => {
         }
         const nextNumber = generatedRandomNumber(lower, higher, currentGuess)
         setCurrentGuess(nextNumber)
-        setRounds(currentRound => currentRound + 1)
+        setRounds((currentRound) => currentRound + 1)
     }
 
     useEffect(() => {
-        if(currentGuess === userChoice) {
+        if (currentGuess === userChoice) {
             onGameOver(rounds)
         }
     }, [currentGuess, userChoice, onGameOver])
@@ -66,18 +64,20 @@ const GameScreen = ({ userChoice, onGameOver }: IProps) => {
             <Text style={style.body}>Opponent's guess</Text>
             <ChosenNumber selectedNumber={currentGuess} />
             <Card style={styles.buttonContainer}>
-                <Button
-                    title="LOWER"
+                <MainButton
                     onPress={() => {
                         nextGuessHandler(Direction.Lower)
                     }}
-                />
-                <Button
-                    title="GREATER"
+                >
+                    LOWER
+                </MainButton>
+                <MainButton
                     onPress={() => {
                         nextGuessHandler(Direction.Greater)
                     }}
-                />
+                >
+                    GREATER
+                </MainButton>
             </Card>
         </View>
     )
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginTop: 20,
-        width: 300,
-        maxWidth: '80%',
+        width: 350,
+        maxWidth: '90%',
     },
 })
 

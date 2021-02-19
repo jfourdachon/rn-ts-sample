@@ -16,6 +16,7 @@ import ChosenNumber from '../components/ChosenNumber'
 import Input from '../components/Input'
 import colors from '../constants/colors'
 import { Capitalize, KeyboarType } from '../constants/enums/textInput'
+import MainButton from '../components/MainButton'
 
 const StartGameView = styled.View`
     flex: 1;
@@ -87,12 +88,12 @@ export const StartGameScreen = (props: IProps) => {
                     <Text style={style.body}>You selected</Text>
 
                     <ChosenNumber selectedNumber={selectedNumber} />
-                    <Button
-                        title="START GAME"
-                        onPress={() => {
+                    <MainButton onPress={() => {
                             props.onStartGame(selectedNumber)
-                        }}
-                    />
+                        }}>
+                        START GAME
+                        </MainButton>
+                    
                 </Card>
             </View>
         )
