@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { StyleSheet, View, Text, Alert } from 'react-native'
+import { StyleSheet, View, Text, Alert, FlatList } from 'react-native'
 import Card from '../components/Card'
 import ChosenNumber from '../components/ChosenNumber'
 import style from '../constants/style/text'
@@ -27,6 +27,11 @@ enum Direction {
     Greater = 'GREATER',
 }
 
+type ItemData = {
+    item: number
+    index: number
+}
+
 const GameScreen = ({ userChoice, onGameOver }: IProps) => {
     const currentLow = useRef<number>(1)
     const currentHigh = useRef<number>(100)
@@ -34,8 +39,9 @@ const GameScreen = ({ userChoice, onGameOver }: IProps) => {
     let lower: number = +currentLow.current
     let higher: number = +currentHigh.current
 
-    const [currentGuess, setCurrentGuess] = useState(generatedRandomNumber(lower, higher, userChoice))
-    const [rounds, setRounds] = useState(0)
+    const initialGuess = generatedRandomNumber(lower, higher, userChoice)
+    const [currentGuess, setCurrentGuess] = useState(initialGuess)
+    const [pastGuesses, setPastGuesses] = useState([initialGuess])
 
     const nextGuessHandler = (direction: Direction) => {
         if (
@@ -50,17 +56,24 @@ const GameScreen = ({ userChoice, onGameOver }: IProps) => {
             currentHigh.current = currentGuess
             higher = +currentHigh.current
         } else {
-            currentLow.current = currentGuess
+            currentLow.current = currentGuess + 1
             lower = +currentLow.current
         }
         const nextNumber = generatedRandomNumber(lower, higher, currentGuess)
         setCurrentGuess(nextNumber)
-        setRounds((currentRound) => currentRound + 1)
+        setPastGuesses((currentPastGuesses) => [nextNumber, ...currentPastGuesses])
     }
+
+    const renderListItem = (itemData: ItemData, listLength: number) => (
+        <View style={styles.listItem}>
+            <Text style={style.body}># {listLength - itemData.index}</Text>
+            <Text style={style.body}>{itemData.item}</Text>
+        </View>
+    )
 
     useEffect(() => {
         if (currentGuess === userChoice) {
-            onGameOver(rounds)
+            onGameOver(pastGuesses.length)
         }
     }, [currentGuess, userChoice, onGameOver])
     return (
@@ -83,6 +96,14 @@ const GameScreen = ({ userChoice, onGameOver }: IProps) => {
                     <Ionicons name="md-add" size={24} color="white" />
                 </MainButton>
             </Card>
+            <View style={styles.listContainer}>
+                <FlatList
+                    keyExtractor={(item) => item.toString()}
+                    data={pastGuesses}
+                    renderItem={(itemData) => renderListItem(itemData, pastGuesses.length)}
+                    contentContainerStyle={styles.list}
+                />
+            </View>
         </View>
     )
 }
@@ -99,6 +120,23 @@ const styles = StyleSheet.create({
         marginTop: 20,
         width: 350,
         maxWidth: '90%',
+    },
+    listContainer: {
+        width: '60%',
+        flex: 1
+    },
+    list: {
+        // flexGrow: 1
+    },
+    listItem: {
+        borderColor: '#ccc',
+        padding: 15,
+        borderWidth: 1,
+        marginVertical: 10,
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%'
     },
 })
 
