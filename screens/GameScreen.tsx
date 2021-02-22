@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { StyleSheet, View, Text, Alert, FlatList } from 'react-native'
+import { StyleSheet, View, Text, Alert, FlatList, Dimensions } from 'react-native'
 import Card from '../components/Card'
 import ChosenNumber from '../components/ChosenNumber'
 import style from '../constants/style/text'
@@ -43,6 +43,9 @@ const GameScreen = ({ userChoice, onGameOver }: IProps) => {
     const [currentGuess, setCurrentGuess] = useState(initialGuess)
     const [pastGuesses, setPastGuesses] = useState([initialGuess])
 
+    const [availableDeviceWidth, setAvailableDeviceWidth] = useState(Dimensions.get('window').width)
+    const [availableDeviceHeight, setAvailableDeviceHeight] = useState(Dimensions.get('window').height)
+
     const nextGuessHandler = (direction: Direction) => {
         if (
             (direction === Direction.Lower && currentGuess < userChoice) ||
@@ -72,10 +75,54 @@ const GameScreen = ({ userChoice, onGameOver }: IProps) => {
     )
 
     useEffect(() => {
+        const updateLayout = () => {
+            setAvailableDeviceWidth(Dimensions.get('window').width)
+            setAvailableDeviceHeight(Dimensions.get('window').height)
+        }
+        Dimensions.addEventListener('change', updateLayout)
+        return () => {
+            Dimensions.removeEventListener('change', updateLayout)
+        }
+    })
+
+    useEffect(() => {
         if (currentGuess === userChoice) {
             onGameOver(pastGuesses.length)
         }
     }, [currentGuess, userChoice, onGameOver])
+
+    if (availableDeviceHeight < 500) {
+        return (
+            <View style={styles.screen}>
+                <Text style={style.body}>Opponent's guess</Text>
+                <View style={styles.controlRow}>
+                    <MainButton
+                        onPress={() => {
+                            nextGuessHandler(Direction.Lower)
+                        }}
+                    >
+                        <Ionicons name="md-remove" size={24} color="white" />
+                    </MainButton>
+                    <ChosenNumber selectedNumber={currentGuess} />
+                    <MainButton
+                        onPress={() => {
+                            nextGuessHandler(Direction.Greater)
+                        }}
+                    >
+                        <Ionicons name="md-add" size={24} color="white" />
+                    </MainButton>
+                </View>
+                <View style={styles.listContainer}>
+                    <FlatList
+                        keyExtractor={(item) => item.toString()}
+                        data={pastGuesses}
+                        renderItem={(itemData) => renderListItem(itemData, pastGuesses.length)}
+                    />
+                </View>
+            </View>
+        )
+    }
+
     return (
         <View style={styles.screen}>
             <Text style={style.body}>Opponent's guess</Text>
@@ -101,7 +148,6 @@ const GameScreen = ({ userChoice, onGameOver }: IProps) => {
                     keyExtractor={(item) => item.toString()}
                     data={pastGuesses}
                     renderItem={(itemData) => renderListItem(itemData, pastGuesses.length)}
-                    contentContainerStyle={styles.list}
                 />
             </View>
         </View>
@@ -114,19 +160,22 @@ const styles = StyleSheet.create({
         padding: 10,
         alignItems: 'center',
     },
+    controlRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: '80%'
+    },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginTop: 20,
+        marginTop: Dimensions.get('window').height > 600 ? 25 : 5,
         width: 350,
         maxWidth: '90%',
     },
     listContainer: {
-        width: '60%',
-        flex: 1
-    },
-    list: {
-        // flexGrow: 1
+        width: Dimensions.get('window').width > 380 ? '60%' : '80%',
+        flex: 1,
     },
     listItem: {
         borderColor: '#ccc',
@@ -136,7 +185,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '100%'
+        width: '100%',
     },
 })
 
