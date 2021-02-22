@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { StyleSheet, View, Text, Button, Alert } from 'react-native'
+import { StyleSheet, View, Text, Alert } from 'react-native'
 import Card from '../components/Card'
 import ChosenNumber from '../components/ChosenNumber'
 import style from '../constants/style/text'
