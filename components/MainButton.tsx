@@ -1,9 +1,10 @@
+import { IconProps } from '@material-ui/core'
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import colors from '../constants/colors'
 
 type IProps = {
-    children: string
+    children: string | IconProps
     onPress: () => void
 }
 

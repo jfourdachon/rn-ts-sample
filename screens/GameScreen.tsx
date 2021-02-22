@@ -4,6 +4,7 @@ import Card from '../components/Card'
 import ChosenNumber from '../components/ChosenNumber'
 import style from '../constants/style/text'
 import MainButton from '../components/MainButton'
+import { Ionicons } from '@expo/vector-icons'
 
 const generatedRandomNumber = (min: number, max: number, exclude: number | null): number => {
     min = Math.ceil(min)
@@ -37,7 +38,10 @@ const GameScreen = ({ userChoice, onGameOver }: IProps) => {
     const [rounds, setRounds] = useState(0)
 
     const nextGuessHandler = (direction: Direction) => {
-        if ((direction === Direction.Lower && currentGuess < userChoice) || (direction === Direction.Greater && currentGuess > userChoice)) {
+        if (
+            (direction === Direction.Lower && currentGuess < userChoice) ||
+            (direction === Direction.Greater && currentGuess > userChoice)
+        ) {
             Alert.alert("Don't lie", 'You know that is wrong', [{ text: 'Sorry', style: 'cancel' }])
             return
         }
@@ -69,14 +73,14 @@ const GameScreen = ({ userChoice, onGameOver }: IProps) => {
                         nextGuessHandler(Direction.Lower)
                     }}
                 >
-                    LOWER
+                    <Ionicons name="md-remove" size={24} color="white" />
                 </MainButton>
                 <MainButton
                     onPress={() => {
                         nextGuessHandler(Direction.Greater)
                     }}
                 >
-                    GREATER
+                    <Ionicons name="md-add" size={24} color="white" />
                 </MainButton>
             </Card>
         </View>

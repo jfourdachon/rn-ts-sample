@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
+    "@types/react-native-vector-icons": "^6.4.6",
     "@types/styled-components": "^5.1.7",
     "@types/styled-components-react-native": "^5.1.1",
     "expo": "~40.0.0",
