@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View } from 'react-native'
+import { SafeAreaView, View } from 'react-native'
 import { ThemeProvider } from 'styled-components/native'
 import { lightTheme } from './styles/theme'
 
@@ -10,7 +10,7 @@ import StartGameScreen from './screens/StartGameScreen'
 import GameScreen from './screens/GameScreen'
 import GameOverScreen from './screens/GameOverScreen'
 
-const fetchFonts = async() => {
+const fetchFonts = async () => {
     await Font.loadAsync({
         'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
         'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
@@ -23,7 +23,13 @@ const App = () => {
     const [dataLoaded, setDataLoaded] = useState(false)
 
     if (!dataLoaded) {
-        return <AppLoading startAsync={fetchFonts} onFinish={() => setDataLoaded(true)} onError={(err: any) => console.log(err)}/>
+        return (
+            <AppLoading
+                startAsync={fetchFonts}
+                onFinish={() => setDataLoaded(true)}
+                onError={(err: any) => console.log(err)}
+            />
+        )
     }
 
     const startGameHandler = (selectedNumber: number) => {
@@ -39,22 +45,24 @@ const App = () => {
         setUserNumber(0)
     }
     return (
-        <ThemeProvider theme={lightTheme}>
-            <View style={{ flex: 1 }}>
-                <Header title="Guess a Number" />
-                {userNumber === 0 ? (
-                    <StartGameScreen onStartGame={startGameHandler} />
-                ) : guessRounds <= 0 ? (
-                    <GameScreen userChoice={userNumber} onGameOver={gameOverHandler} />
-                ) : (
-                    <GameOverScreen
-                        roundsCount={guessRounds}
-                        userChoice={userNumber}
-                        startNewGame={startNewGameHandler}
-                    />
-                )}
-            </View>
-        </ThemeProvider>
+        <SafeAreaView>
+            <ThemeProvider theme={lightTheme}>
+                <View style={{ flex: 1 }}>
+                    <Header title="Guess a Number" />
+                    {userNumber === 0 ? (
+                        <StartGameScreen onStartGame={startGameHandler} />
+                    ) : guessRounds <= 0 ? (
+                        <GameScreen userChoice={userNumber} onGameOver={gameOverHandler} />
+                    ) : (
+                        <GameOverScreen
+                            roundsCount={guessRounds}
+                            userChoice={userNumber}
+                            startNewGame={startNewGameHandler}
+                        />
+                    )}
+                </View>
+            </ThemeProvider>
+        </SafeAreaView>
     )
 }
 
